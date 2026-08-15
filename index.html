@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>WhiskerAirport 🐾✈️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="grain"></div>
+<div id="vignette"></div>
+<div id="skyLayer">
+  <div id="sunGlow"></div>
+  <div id="cloudLayer"></div>
+  <div id="mountainLayer"></div>
+</div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-badge">🐾</span>
+    <span>Whisker<span class="brand-accent">Airport</span></span>
+    <small>GİŞE 3</small>
+  </div>
+  <div class="topbar-right">
+    <button class="icon-btn ghost" id="soundBtn" title="Sesi aç/kapat" aria-label="Sesi aç/kapat">🔈</button>
+    <div class="wallet" id="walletDisplay"><span class="coin-ico">🪙</span><span id="walletNum">0</span></div>
+    <button class="btn ghost" id="shopBtn">🛫 Hangar</button>
+  </div>
+</header>
+
+<div id="toastWrap"></div>
+<div id="flashOverlay"></div>
+
+<main>
+
+  <!-- START -->
+  <section class="screen active" id="screen-start">
+    <div class="ticket hero-ticket">
+      <div class="ticket-glow"></div>
+      <div class="eyebrow">HAYALİ HAVAYOLU • KEDİ TERMİNALİ</div>
+      <h1>WhiskerAirport'a<br>Hoş Geldiniz</h1>
+      <p class="lead">Bugün gişe sizde. Kedi yolcuları check-in yapın, valizlerini tartın,<br class="br-desktop"> sonra pilot koltuğuna geçip onları hedeflerine siz uçurun.</p>
+      <div class="hero-scene" id="heroCatSlot"></div>
+      <div class="runway-mini"><div class="runway-strip"></div></div>
+      <button class="btn btn-lg" id="startBtn"><span>Vardiyaya Başla</span> <span class="btn-emoji">✈️</span></button>
+    </div>
+  </section>
+
+  <!-- CHECKIN -->
+  <section class="screen" id="screen-checkin">
+    <div class="queue-note" id="queueNote">Sıradaki yolcu</div>
+    <div class="ticket" id="checkinTicket">
+      <div class="stamp" id="stampEl"><span>ONAYLANDI</span><small>🐾 WhiskerAirport</small></div>
+      <div class="checkin-head">
+        <div class="avatar-frame" id="ciAvatar"></div>
+        <div class="info">
+          <h2 id="ciName">-</h2>
+          <div class="dest" id="ciDest">-</div>
+        </div>
+      </div>
+      <div class="speech" id="ciGreeting">-</div>
+
+      <div class="perf"></div>
+
+      <div class="step" id="stepTicket">
+        <div class="step-title"><span class="step-dot">1</span> Bileti Kontrol Et</div>
+        <div class="ticket-details" id="ticketDetails">
+          <div class="fact-grid">
+            <div class="fact"><div class="k">Uçuş No</div><div class="v mono" id="fFlight">-</div></div>
+            <div class="fact"><div class="k">Koltuk</div><div class="v mono" id="fSeat">-</div></div>
+            <div class="fact"><div class="k">Kapı</div><div class="v mono" id="fGate">-</div></div>
+            <div class="fact"><div class="k">Varış</div><div class="v mono" id="fDest">-</div></div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="btnCheckTicket">Bileti Kontrol Et</button>
+        </div>
+      </div>
+
+      <div class="step" id="stepLuggage" style="display:none;">
+        <div class="step-title"><span class="step-dot">2</span> Valizi Tart</div>
+        <div class="scale-wrap">
+          <div class="scale-visual"><div class="scale-needle" id="scaleNeedle"></div></div>
+          <div class="scale-readout">
+            <div class="scale-num" id="scaleNum">0.0 kg</div>
+            <div class="limit-note">Limit: <span id="limitVal">10</span> kg</div>
+          </div>
+        </div>
+        <div id="luggageResult"></div>
+        <div class="actions">
+          <button class="btn" id="btnWeigh">Valizi Tart</button>
+        </div>
+      </div>
+
+      <div class="step" id="stepBoard" style="display:none;">
+        <div class="step-title"><span class="step-dot">3</span> Uçağa Yönlendir</div>
+        <div class="actions">
+          <button class="btn secondary" id="btnBoard">Uçağa Bindir</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOARDING -->
+  <section class="screen" id="screen-boarding">
+    <div class="ticket board-scene">
+      <div class="plane-preview-wrap">
+        <canvas id="previewCanvas" width="220" height="180"></canvas>
+      </div>
+      <h2 id="boardDestText">Kalkışa hazırlanıyor…</h2>
+      <div class="countdown" id="countdownEl">3</div>
+    </div>
+  </section>
+
+  <!-- FLIGHT -->
+  <section class="screen" id="screen-flight">
+    <div class="flight-hud">
+      <div class="lives" id="livesEl"></div>
+      <button class="icon-btn ghost" id="pauseBtn" title="Duraklat">⏸️</button>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+      <div class="progress-plane" id="progressPlane">✈️</div>
+      <div class="progress-flag" id="progressFlag">🏁</div>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas id="gameCanvas" width="600" height="620"></canvas>
+    </div>
+    <div class="flight-hint">Uçağı sürükle ya da <kbd>←</kbd> <kbd>→</kbd> tuşlarıyla şeritler arasında geçiş yap</div>
+  </section>
+
+  <!-- LANDING -->
+  <section class="screen" id="screen-landing">
+    <div class="ticket postcard">
+      <div class="confetti-layer" id="confettiLayer"></div>
+      <span class="landmark-big" id="landLandmark">🗼</span>
+      <h2 id="landTitle">Vardık!</h2>
+      <div class="joke" id="landJoke">-</div>
+      <div class="earn-row">
+        <div class="earn-chip"><span class="lab">Toplanan</span><span class="num" id="earnCoins">+0 🪙</span></div>
+        <div class="earn-chip"><span class="lab">Çarpma</span><span class="num" id="earnHits">0</span></div>
+      </div>
+      <div class="actions center">
+        <button class="btn" id="nextCatBtn">Sıradaki Kedi</button>
+        <button class="btn ghost" id="shopFromLandBtn">🛫 Hangara Uğra</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>WhiskerAirport 🐾 — eğlence amaçlı hayali bir havalimanı simülasyonudur.</footer>
+
+<div class="modal-overlay" id="shopModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>🛫 Hangar</h2>
+      <button class="close-x" id="closeShop" aria-label="Kapat">✕</button>
+    </div>
+    <p class="modal-sub">Kazandığın madeni paralarla yeni uçaklara geç.</p>
+    <div id="planeList"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="pauseModal">
+  <div class="modal pause-box">
+    <h2>⏸️ Duraklatıldı</h2>
+    <p class="modal-sub">Kedi kemerini bağlı tutuyor, bekliyoruz.</p>
+    <div class="actions center">
+      <button class="btn secondary" id="resumeBtn">Devam Et</button>
+      <button class="btn pink" id="endFlightBtn">Uçuşu Bitir</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
